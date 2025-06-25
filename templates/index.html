@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">🎓 Student Management</a>
+
+    <div class="d-flex">
+      <a href="/add" class="btn btn-success me-2">➕ Add Student</a>
+      <a href="/predict" class="btn btn-warning me-2">🤖 Predict</a>
+      <a href="/charts" class="btn btn-info me-2">📈 Analytics</a>
+
+      {% if current_user.is_authenticated %}
+        <a href="/logout" class="btn btn-danger">🚪 Logout</a>
+      {% else %}
+        <a href="/login" class="btn btn-outline-light">🔐 Login</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h3 class="mb-4">📋 All Students</h3>
+
+  {% if students %}
+  <table class="table table-bordered table-hover bg-white shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Attendance (%)</th>
+        <th>Previous Score</th>
+        <th>Study Hours</th>
+        <th>Final Score / Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in students %}
+      <tr>
+        <td>{{ student.id }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.attendance }}</td>
+        <td>{{ student.previous_score }}</td>
+        <td>{{ student.study_hours }}</td>
+        <td>
+          <strong>{{ student.final_score }}</strong><br>
+          <a href="/edit/{{ student.id }}" class="btn btn-sm btn-outline-primary mt-2">✏️ Edit</a>
+          <a href="/delete/{{ student.id }}" class="btn btn-sm btn-outline-danger mt-1">🗑️ Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="alert alert-info">No students found. Add your first one!</div>
+  {% endif %}
+</div>
+</body>
+</html>
